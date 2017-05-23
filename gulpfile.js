@@ -6,24 +6,22 @@ var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
 var del = require('del');
 var jshint = require('gulp-jshint');
-var lib = require('bower-files')({
-  "overrides":{
-    "materialize" : {
-      "main": [
-        "dist/css/materialize.css",
-        "dist/js/materialize.js"
-      ]
-    }
-  }
-});
-
+var concat = require('gulp-concat');
+var lib = require('bower-files')();
+var browserSync = require('browser-sync').create();
 var buildProduction = utilities.env.production;
 
-gulp.task('jsBrowserify', function() {
-  return browserify({ entries: ['./js/alarmclock-interface.js'] })
+gulp.task('jsBrowserify', ['concatInterface'], function() {
+  return browserify({ entries: ['./tmp/allConcat.js'] })
     .bundle()
     .pipe(source('app.js'))
     .pipe(gulp.dest('./build/js'));
+});
+
+gulp.task('concatInterface', function() {
+  return gulp.src(['./js/*-interface.js'])
+    .pipe(concat('allConcat.js'))
+    .pipe(gulp.dest('./tmp'));
 });
 
 gulp.task("minifyScripts", ["jsBrowserify"], function() {
@@ -55,6 +53,26 @@ gulp.task('bower', ['bowerJS', 'bowerCSS']);
 
 gulp.task("clean", function() {
   return del(['build', 'tmp']);
+});
+
+gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
+  browserSync.reload();
+});
+
+gulp.task('bowerBuild', ['bower'], function(){
+  browserSync.reload();
+});
+
+gulp.task('serve', function() {
+  browserSync.init({
+    server: {
+      baseDir: "./",
+      index: "index.html"
+    }
+  });
+
+  gulp.watch(['js/*.js'], ['jsBuild']);
+  gulp.watch(['bower.json'], ['bowerBuild']);
 });
 
 gulp.task("build", ['clean'], function() {

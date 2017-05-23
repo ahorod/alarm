@@ -1,12 +1,13 @@
-function AlarmClock(currentTime, alarmTime) {
-  this.currentTime = currentTime;
+function AlarmClock(alarmTime, soundAlarm) {
   this.alarmTime = alarmTime;
+  this.soundAlarm = soundAlarm;
 }
 
-AlarmClock.prototype.soundAlarm = false;
+// AlarmClock.prototype.alarmListener = function(currentTime) {
+//   if (this.alarmTime === currentTime) {
+//     this.soundAlarm = true;
+//     return true;
+//   }
+// }
 
-AlarmClock.prototype.alarmListener = function() {
-  if (this.currentTime === this.alarmTime) {
-
-  }
-}
+exports.alarmClockModule = AlarmClock;

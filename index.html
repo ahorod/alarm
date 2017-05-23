@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="build/css/vendor.css">
     <script src="build/js/vendor.min.js"></script>
     <script type="text/javascript" src="build/js/app.js"></script>
+    <link rel="stylesheet" href="/css/styles.css" media="screen" title="no title" charset="utf-8">
     <title>Alarm Clock</title>
   </head>
   <body>
@@ -12,9 +13,13 @@
     <form id="set-alarm">
       <div class="input-field col s12">
         <label for="alarm-time">Set the alarm:</label>
-        <input placeholder="00:00" id="alarm-time" type="text" class="validate">
+        <br>
+        <input id="alarm-time" type="time" class="validate">
       </div>
       <button type="submit">Submit</button>
     </form>
+    <div id="cat">
+      <img src="img/cat.jpg" alt="cat">
+    </div>
   </body>
 </html>
